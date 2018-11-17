@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * Hello word
  *
- * @author 刘洋印
+ * @author lyy
  * @date  2018/3/28 12:58
  */
 
