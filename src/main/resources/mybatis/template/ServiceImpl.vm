@@ -1,26 +1,18 @@
-package ${package_name}.rpc.service.impl;
+package ${package_name}.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import com.jankin.common.annotation.BaseService;
-import com.jankin.common.base.BaseServiceImpl;
-import ${package_name}.dao.mapper.${model}Mapper;
-import ${package_name}.dao.model.${model};
-import ${package_name}.dao.model.${model}Example;
-import ${package_name}.rpc.api.${model}Service;
+import ${package_name}.mapper.${model}Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
 * ${model}Service实现
 *  @author lyy
-*  @date ${DATE} ${TIME}
+*  @date ${ctime}
 */
 @Slf4j
 @Service
-@Transactional
-@BaseService
-public class ${model}ServiceImpl extends BaseServiceImpl<${model}Mapper, ${model}, ${model}Example> implements ${model}Service {
+public class ${model}ServiceImpl {
 
     @Autowired
     ${model}Mapper ${mapper}Mapper;

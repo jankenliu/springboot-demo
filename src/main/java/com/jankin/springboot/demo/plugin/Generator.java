@@ -16,12 +16,11 @@ public class Generator {
     /**
      *  根据命名规范，只修改此常量值即可
      */
-    private final static String DATABASE =  PropertiesFileUtil.getInstance("dev").get("generator.database");
-    private final static String PACKAGE_NAME =  PropertiesFileUtil.getInstance("dev").get("generator.packageName");
-    private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("dev").get("generator.jdbc.driver");
-    private static String JDBC_URL = PropertiesFileUtil.getInstance("dev").get("generator.jdbc.url");
-    private static String JDBC_USERNAME = PropertiesFileUtil.getInstance("dev").get("generator.jdbc.username");
-    private static String JDBC_PASSWORD = PropertiesFileUtil.getInstance("dev").get("generator.jdbc.password");
+    private final static String PACKAGE_NAME =  PropertiesFileUtil.getInstance("profiles/dev").get("generator.packageName");
+    private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.driver");
+    private static String JDBC_URL = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.url");
+    private static String JDBC_USERNAME = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.username");
+    private static String JDBC_PASSWORD = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.password");
     /**
      *  需要insert后返回主键的表配置，key:表名,value:主键名
      */
@@ -31,8 +30,12 @@ public class Generator {
      * 自动代码生成
      * @param args
      */
-    public static void main(String[] args) throws Exception {
-        MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, DATABASE, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+    public static void main(String[] args) {
+        try {
+            MybatisGeneratorUtil.generator(JDBC_DRIVER, JDBC_URL, JDBC_USERNAME, JDBC_PASSWORD, PACKAGE_NAME, LAST_INSERT_ID_TABLES);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

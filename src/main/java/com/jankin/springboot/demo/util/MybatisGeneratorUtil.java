@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 逆向工程-代码生成工具
@@ -41,7 +43,7 @@ public class MybatisGeneratorUtil {
      */
     private static String database;
     /**
-     * 逆向生成指向的包名地址
+     * 逆向生成指向的基本包名地址
      */
     private static String packageName;
 
@@ -65,12 +67,11 @@ public class MybatisGeneratorUtil {
     /**
      * Controller模板路径
      */
-    private static String controller_vm = "/template/Controller.vm";
+    private static String controller_vm = "/mybatis/template/Controller.vm";
     /**
      * generatorConfigXml路径
      */
     private static String generatorConfigXml;
-
 
 
     /**
@@ -80,17 +81,22 @@ public class MybatisGeneratorUtil {
      * @param jdbcUrl      链接
      * @param jdbcUsername 帐号
      * @param jdbcPassword 密码
-     * @param database     数据库
      * @param packageName  包名
      */
-    public static void generator(String jdbcDriver, String jdbcUrl, String jdbcUsername, String jdbcPassword, String database, String packageName, Map<String, String> lastInsertIdTables) throws Exception {
-        MybatisGeneratorUtil.jdbcDriver=jdbcDriver;
-        MybatisGeneratorUtil.jdbcUrl=jdbcUrl;
-        MybatisGeneratorUtil.jdbcUsername=jdbcUsername;
-        MybatisGeneratorUtil.jdbcPassword=jdbcPassword;
-        MybatisGeneratorUtil.database=database;
-        MybatisGeneratorUtil.packageName=packageName;
-        MybatisGeneratorUtil.lastInsertIdTables=lastInsertIdTables;
+    public static void generator(String jdbcDriver, String jdbcUrl, String jdbcUsername, String jdbcPassword, String packageName, Map<String, String> lastInsertIdTables) throws Exception {
+        MybatisGeneratorUtil.jdbcDriver = jdbcDriver;
+        MybatisGeneratorUtil.jdbcUrl = jdbcUrl;
+        MybatisGeneratorUtil.jdbcUsername = jdbcUsername;
+        MybatisGeneratorUtil.jdbcPassword = jdbcPassword;
+        MybatisGeneratorUtil.packageName = packageName;
+        MybatisGeneratorUtil.lastInsertIdTables = lastInsertIdTables;
+
+        Pattern pattern = Pattern.compile(":\\d{4}/(\\w{1,})\\?");
+        Matcher matcher = pattern.matcher(jdbcUrl);
+        if (matcher.find()) {
+            database = matcher.group(1);
+        }
+
         String os = System.getProperty("os.name");
         if (os.toLowerCase().startsWith("win")) {
             generatorConfig_vm = MybatisGeneratorUtil.class.getResource(generatorConfig_vm).getPath().replaceFirst("/", "");
@@ -103,10 +109,10 @@ public class MybatisGeneratorUtil {
             serviceImpl_vm = MybatisGeneratorUtil.class.getResource(serviceImpl_vm).getPath();
             controller_vm = MybatisGeneratorUtil.class.getResource(controller_vm).getPath();
         }
-        generatorConfigXml = MybatisGeneratorUtil.class.getResource("/").getPath().replace("/target/classes/", "") + "/src/main/resources/generatorConfig.xml";
+        generatorConfigXml = MybatisGeneratorUtil.class.getResource("/").getPath().replace("/target/classes/", "") + "/src/main/resources/mybatis/generatorConfig.xml";
 
         //生成generatorConfig.xml文件
-        List<Map<String, Object>> tables =generatorXml();
+        List<Map<String, Object>> tables = generatorXml();
         //运行MybatisGenerator
         doMybatisGenerator();
         //生成Service层
@@ -115,42 +121,36 @@ public class MybatisGeneratorUtil {
         generatorController(tables);
     }
 
-    private static List<Map<String, Object>>  generatorXml() {
+    private static List<Map<String, Object>> generatorXml() throws Exception {
         System.out.println("========== 开始生成generatorConfig.xml文件 ==========");
         List<Map<String, Object>> tables = new ArrayList<>();
-        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database +  ";";
-        try {
-            VelocityContext context = new VelocityContext();
-            Map<String, Object> table;
+        String sql = "SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = '" + database + "';";
 
-            // 查询定制前缀项目的所有表
-            JdbcUtil jdbcUtil = new JdbcUtil(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword);
-            List<Map> result = jdbcUtil.selectByParams(sql, null);
-            for (Map map : result) {
-                System.out.println(map.get("TABLE_NAME"));
-                table = new HashMap<>(2);
-                table.put("table_name", map.get("TABLE_NAME"));
-                table.put("model_name", StringUtil.lineToHump(ObjectUtils.toString(map.get("TABLE_NAME"))));
-                tables.add(table);
-            }
-            jdbcUtil.release();
+        VelocityContext context = new VelocityContext();
+        Map<String, Object> table;
 
-            context.put("tables", tables);
-            context.put("generator_javaModelGenerator_targetPackage", packageName + ".dao.model");
-            context.put("generator_sqlMapGenerator_targetPackage", packageName + ".dao.mapper");
-            context.put("generator_javaClientGenerator_targetPackage", packageName + ".dao.mapper");
-            context.put("targetProject", "");
-            context.put("targetProject_sqlMap", "");
-            context.put("generator_jdbc_password", jdbcPassword);
-            context.put("last_insert_id_tables", lastInsertIdTables);
-            VelocityUtil.generate(generatorConfig_vm, generatorConfigXml, context);
-            // 删除旧代码
-            deleteDir(new File("/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/model"));
-//			deleteDir(new File(targetProject + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/mapper"));
-//			deleteDir(new File(targetProjectSqlMap + "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/dao/mapper"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 查询所有表
+        JdbcUtil jdbcUtil = new JdbcUtil(jdbcDriver, jdbcUrl, jdbcUsername, jdbcPassword);
+        List<Map> result = jdbcUtil.selectByParams(sql, null);
+        for (int i = 0; i < result.size(); i++) {
+            System.out.println(i + ": " + result.get(i).get("TABLE_NAME"));
+            table = new HashMap<>(2);
+            table.put("table_name", result.get(i).get("TABLE_NAME"));
+            table.put("model_name", StringUtil.lineToHump(ObjectUtils.toString(result.get(i).get("TABLE_NAME"))));
+            tables.add(table);
         }
+        jdbcUtil.release();
+
+        context.put("tables", tables);
+        context.put("generator_javaModelGenerator_targetPackage", packageName + ".model.po");
+        context.put("generator_sqlMapGenerator_targetPackage", packageName + ".mapper.xml");
+        context.put("generator_javaClientGenerator_targetPackage", packageName + ".mapper");
+        context.put("last_insert_id_tables", lastInsertIdTables);
+        VelocityUtil.generate(generatorConfig_vm, generatorConfigXml, context);
+        // 删除实体旧代码
+        deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/model/po"));
+        // 删除dao层旧代码(mapper、mapperXML)
+        deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper/xml"));
         System.out.println("========== 结束生成generatorConfig.xml文件 ==========");
         return tables;
     }
@@ -161,8 +161,8 @@ public class MybatisGeneratorUtil {
         File configFile = new File(generatorConfigXml);
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(configFile);
-        DefaultShellCallback callback = new DefaultShellCallback(true);
-        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        DefaultShellCallback dsc = new DefaultShellCallback(true);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, dsc, warnings);
         myBatisGenerator.generate(null);
         for (String warning : warnings) {
             System.out.println(warning);
@@ -172,37 +172,19 @@ public class MybatisGeneratorUtil {
 
     private static void generatorService(List<Map<String, Object>> tables) throws Exception {
         System.out.println("========== 开始生成Service ==========");
-        String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
-        String servicePath = "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service";
-        String serviceImplPath = "/src/main/java/" + packageName.replaceAll("\\.", "/") + "/service/impl";
+        String ctime = new SimpleDateFormat("yyyy-M-d").format(new Date());
+        String servicePath = "src/main/java/" + packageName.replaceAll("\\.", "/") + "/service";
+        String serviceImplPath = "src/main/java/" + packageName.replaceAll("\\.", "/") + "/service/impl";
 
-        //生成目录
-        File outputServiceDirectory=new File(servicePath);
-        boolean isExistsServiceDirectory=outputServiceDirectory.exists();
-        System.out.println((isExistsServiceDirectory?"已检测到":"未检测到")+" service 目录 : " +servicePath);
-        if(!isExistsServiceDirectory){
-            System.out.println("不存在 service 目录，正在生成 --->>>  "+servicePath );
-            boolean mkdir = outputServiceDirectory.mkdir();
-            if (mkdir){
-                System.out.println("生成 service 目录成功！ --->>>  "+servicePath );
-            }
+        //检查service 与 serviceImpl 目录是否存在，不存在则主动创建
+        if (!(checkDir(servicePath) && checkDir(serviceImplPath))) {
+            return;
         }
-        File outputServiceImplDirectory=new File(serviceImplPath);
-        boolean isExistsServiceImplDirectory=outputServiceImplDirectory.exists();
-        System.out.println((isExistsServiceImplDirectory?"已检测到":"未检测到")+" serviceImpl 目录 : " +serviceImplPath);
-        if(!isExistsServiceImplDirectory){
-            System.out.println("不存在 serviceImpl 目录，正在生成 --->>>  "+serviceImplPath );
-            boolean mkdir = outputServiceImplDirectory.mkdir();
-            if (mkdir) {
-                System.out.println("生成 serviceImpl 目录成功！ --->>>  "+serviceImplPath );
-            }
-        }
+
         for (Map<String, Object> table : tables) {
             String model = StringUtil.lineToHump(ObjectUtils.toString(table.get("table_name")));
-            String service = servicePath + "/" + model + "Service.java";
-            String serviceMock = servicePath + "/" + model + "ServiceMock.java";
-            String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
             // 生成service
+            String service = servicePath + "/" + model + "Service.java";
             File serviceFile = new File(service);
             System.out.println("检测到 " + model + "Service.java" + " 文件存在为 ：" + serviceFile.exists());
             if (!serviceFile.exists()) {
@@ -216,6 +198,7 @@ public class MybatisGeneratorUtil {
                 System.out.println("。。。 生成 " + model + "Service.java 成功!");
             }
             // 生成serviceImpl
+            String serviceImpl = serviceImplPath + "/" + model + "ServiceImpl.java";
             File serviceImplFile = new File(serviceImpl);
             System.out.println("检测到 " + model + "ServiceImpl.java" + " 文件存在为 ：" + serviceImplFile.exists());
             if (!serviceImplFile.exists()) {
@@ -235,26 +218,40 @@ public class MybatisGeneratorUtil {
 
     private static void generatorController(List<Map<String, Object>> tables) throws Exception {
         System.out.println("========== 开始生成Controller ==========");
-        String ctime = new SimpleDateFormat("yyyy/M/d").format(new Date());
-        String controllerPath ="/src/main/java/" + packageName.replaceAll("\\.", "/") + "/controller";
+        String ctime = new SimpleDateFormat("yyyy-M-d").format(new Date());
+        String controllerPath = "src/main/java/" + packageName.replaceAll("\\.", "/") + "/controller";
+
+        //检查controller 目录是否存在，不存在则主动创建
+        if (!checkDir(controllerPath)) {
+            return;
+        }
+
         for (Map<String, Object> table : tables) {
             String model = StringUtil.lineToHump(ObjectUtils.toString(table.get("table_name")));
             String controller = controllerPath + "/" + model + "Controller.java";
             // 生成controller
-            File serviceFile = new File(controller);
-            if (!serviceFile.exists()) {
+            File controllerFile = new File(controller);
+            System.out.println("检测到 " + model + "Controller.java" + " 文件存在为 ：" + controllerFile.exists());
+            if (!controllerFile.exists()) {
+                System.out.println("。。。 开始生成 " + model + "Controller.java");
                 VelocityContext context = new VelocityContext();
                 context.put("package_name", packageName);
                 context.put("model", model);
+                context.put("modelLowerCase", StringUtil.toLowerCaseFirstOne(model));
                 context.put("ctime", ctime);
                 VelocityUtil.generate(controller_vm, controller, context);
                 System.out.println(controller);
+                System.out.println("。。。 生成 " + model + "Controller.java 成功!");
             }
         }
         System.out.println("========== 结束生成Controller ==========");
     }
 
-    // 递归删除非空文件夹
+    /**
+     * 递归删除非空文件夹
+     *
+     * @param dir 文件目录
+     */
     private static void deleteDir(@NotNull File dir) {
         if (dir.isDirectory()) {
             File[] files = dir.listFiles();
@@ -268,6 +265,29 @@ public class MybatisGeneratorUtil {
         if (!delete) {
             System.out.println("文件删除失败:" + dir);
         }
+    }
+
+    /**
+     * 检查目录是否存在，不存在则自动生成一个
+     *
+     * @param dir 目录路径
+     */
+    private static boolean checkDir(String dir) {
+        File outputServiceImplDirectory = new File(dir);
+        boolean isExistsServiceImplDirectory = outputServiceImplDirectory.exists();
+        System.out.println((isExistsServiceImplDirectory ? "已检测到" : "未检测到") + "目录 : " + dir);
+        if (!isExistsServiceImplDirectory) {
+            System.out.println("正在生成目录 --->>>" + dir);
+            boolean mkdir = outputServiceImplDirectory.mkdir();
+            if (mkdir) {
+                System.out.println("生成目录成功！ --->>>" + dir);
+                return true;
+            } else {
+                System.out.println("生成目录失败！ --->>>" + dir);
+                return false;
+            }
+        }
+        return true;
     }
 
 }

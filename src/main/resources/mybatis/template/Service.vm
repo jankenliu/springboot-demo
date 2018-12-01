@@ -1,14 +1,10 @@
-package ${package_name}.rpc.api;
-
-import com.jankin.common.base.BaseService;
-import ${package_name}.dao.model.${model};
-import ${package_name}.dao.model.${model}Example;
+package ${package_name}.service;
 
 /**
 * ${model}Service接口
 *  @author lyy
-*  @date ${DATE} ${TIME}
+*  @date ${ctime}
 */
-public interface ${model}Service extends BaseService<${model}, ${model}Example> {
+public interface ${model}Service  {
 
 }

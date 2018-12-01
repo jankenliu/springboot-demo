@@ -1,6 +1,7 @@
 package com.jankin.springboot.demo.util;
 
 //import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.io.output.FileWriterWithEncoding;
 import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -26,20 +27,15 @@ class VelocityUtil {
 	 * @throws Exception
 	 */
 	static void generate(String inputVmFilePath, String outputFilePath, VelocityContext context) throws Exception {
-		try {
-			Properties properties = new Properties();
-			properties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, getPath(inputVmFilePath));
-			Velocity.init(properties);
-			//VelocityEngine engine = new VelocityEngine();
-			Template template = Velocity.getTemplate(getFile(inputVmFilePath), "utf-8");
-			File outputFile = new File(outputFilePath);
-//			FileWriterWithEncoding writer = new FileWriterWithEncoding(outputFile, "utf-8");
-//			template.merge(context, writer);
-//			writer.close();
-		} catch (Exception ex) {
-			throw ex;
-		}
-	}
+        Properties properties = new Properties();
+        properties.setProperty(VelocityEngine.FILE_RESOURCE_LOADER_PATH, getPath(inputVmFilePath));
+        Velocity.init(properties);
+        Template template = Velocity.getTemplate(getFile(inputVmFilePath), "utf-8");
+        File outputFile = new File(outputFilePath);
+        FileWriterWithEncoding writer = new FileWriterWithEncoding(outputFile, "utf-8");
+        template.merge(context, writer);
+        writer.close();
+    }
 
 	/**
 	 * 根据文件绝对路径获取目录

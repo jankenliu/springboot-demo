@@ -1,5 +1,6 @@
 package com.jankin.springboot.demo.util;
 
+import javax.validation.constraints.NotNull;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class JdbcUtil {
 	private ResultSet rs;
 
 	// 初始化
-	public JdbcUtil(String driver, String url, String username, String password) {
+	public JdbcUtil(@NotNull String driver,@NotNull String url, @NotNull String username, String password) {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, username, password);
@@ -32,29 +33,29 @@ public class JdbcUtil {
 	}
 
 	// 更新数据
-	public boolean updateByParams(String sql, List params) throws SQLException {
+	public boolean updateByParams(@NotNull String sql, List params) throws SQLException {
 		// 影响行数
 		int result = -1;
 		pstmt = conn.prepareStatement(sql);
 		int index = 1;
 		// 填充sql语句中的占位符
 		if (null != params && !params.isEmpty()) {
-			for (int i = 0; i < params.size(); i ++) {
-				pstmt.setObject(index ++, params.get(i));
+			for (Object param : params) {
+				pstmt.setObject(index++, param);
 			}
 		}
 		result = pstmt.executeUpdate();
-		return result > 0 ? true : false;
+		return result > 0;
 	}
 
 	// 查询多条记录
 	public List<Map> selectByParams(String sql, List params) throws SQLException {
-		List<Map> list = new ArrayList<Map> ();
+		List<Map> list = new ArrayList<>();
 		int index = 1;
 		pstmt = conn.prepareStatement(sql);
 		if (null != params && !params.isEmpty()) {
-			for (int i = 0; i < params.size(); i ++) {
-				pstmt.setObject(index++, params.get(i));
+			for (Object param : params) {
+				pstmt.setObject(index++, param);
 			}
 		}
 		rs = pstmt.executeQuery();
@@ -68,6 +69,7 @@ public class JdbcUtil {
 				if (null == columnValue) {
 					columnValue = "";
 				}
+				//noinspection unchecked
 				map.put(columnName, columnValue);
 			}
 			list.add(map);
