@@ -116,9 +116,9 @@ public class MybatisGeneratorUtil {
         //运行MybatisGenerator
         doMybatisGenerator();
         //生成Service层
-        generatorService(tables);
+        //generatorService(tables);
         //生成Controller层
-        generatorController(tables);
+        //generatorController(tables);
     }
 
     private static List<Map<String, Object>> generatorXml() throws Exception {
