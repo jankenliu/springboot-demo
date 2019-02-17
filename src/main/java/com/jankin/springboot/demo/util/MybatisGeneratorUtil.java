@@ -116,7 +116,7 @@ public class MybatisGeneratorUtil {
         //运行MybatisGenerator
         doMybatisGenerator();
         //生成Service层
-        //generatorService(tables);
+        generatorService(tables);
         //生成Controller层
         //generatorController(tables);
     }
