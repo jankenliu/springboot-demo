@@ -9,7 +9,8 @@ spring:
     druid:
       filters: stat
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://127.0.0.1:3306/test
+#      todo 如何将 dev.properties中的属性 迁移到yml中来
+      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8
       username: root
       password: 123456
       maxActive: 20
