@@ -16,11 +16,11 @@ public class Generator {
     /**
      *  根据命名规范，只修改此常量值即可
      */
-    private final static String PACKAGE_NAME =  PropertiesFileUtil.getInstance("profiles/dev").get("generator.packageName");
-    private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.driver");
-    private static String JDBC_URL = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.url");
-    private static String JDBC_USERNAME = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.username");
-    private static String JDBC_PASSWORD = PropertiesFileUtil.getInstance("profiles/dev").get("generator.jdbc.password");
+    private final static String PACKAGE_NAME =  PropertiesFileUtil.getInstance("config/application-dev").get("generator.packageName");
+    private static String JDBC_DRIVER = PropertiesFileUtil.getInstance("config/application-dev").get("generator.jdbc.driver");
+    private static String JDBC_URL = PropertiesFileUtil.getInstance("config/application-dev").get("generator.jdbc.url");
+    private static String JDBC_USERNAME = PropertiesFileUtil.getInstance("config/application-dev").get("generator.jdbc.username");
+    private static String JDBC_PASSWORD = PropertiesFileUtil.getInstance("config/application-dev").get("generator.jdbc.password");
     /**
      *  需要insert后返回主键的表配置，key:表名,value:主键名
      */

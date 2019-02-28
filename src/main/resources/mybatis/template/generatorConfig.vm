@@ -3,7 +3,7 @@
 <generatorConfiguration>
 
     <!-- 配置文件 -->
-    <properties resource="profiles/dev.properties" />
+    <properties resource="config/application-dev.properties" />
 
     <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
@@ -44,7 +44,7 @@
         <javaModelGenerator targetPackage="${generator_javaModelGenerator_targetPackage}" targetProject="src/main/java" />
 
         <!-- MapperXML生成 -->
-##        <sqlMapGenerator targetPackage="${generator_sqlMapGenerator_targetPackage}" targetProject="src/main/java" />
+        <sqlMapGenerator targetPackage="${generator_sqlMapGenerator_targetPackage}" targetProject="src/main/java" />
 
         <!-- Mapper接口生成 -->
         <javaClientGenerator targetPackage="${generator_javaClientGenerator_targetPackage}" targetProject="src/main/java" type="XMLMAPPER" />
