@@ -157,10 +157,6 @@ public class MybatisGeneratorUtil {
         return tables;
     }
 
-    public static void main(String[] args) {
-        deleteDir(new File("src/main/java/" + "com.jankin.springboot.demo".replaceAll("\\.", "/") + "/mapper/xml"));
-    }
-
     private static void doMybatisGenerator() throws Exception {
         System.out.println("========== 开始运行MybatisGenerator ==========");
         List<String> warnings = new ArrayList<>();
