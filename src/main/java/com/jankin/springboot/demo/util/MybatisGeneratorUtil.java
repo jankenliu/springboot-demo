@@ -118,7 +118,7 @@ public class MybatisGeneratorUtil {
         //生成Service层
         generatorService(tables);
         //生成Controller层
-        //generatorController(tables);
+        generatorController(tables);
         // 删除dao层旧代码(mapper、mapperXML)
         deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper/xml"));
     }
