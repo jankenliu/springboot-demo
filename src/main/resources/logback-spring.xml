@@ -14,7 +14,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- 日志保存的目录，注意要修改成自己项目的日志目录 -->
             <FileNamePattern>
-                /usr/app/log4j/spring-demo/%d{yyyy-MM-dd}.log
+                /Users/lyy/Library/log4j/spring-demo/%d{yyyy-MM-dd}.log
             </FileNamePattern>
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
