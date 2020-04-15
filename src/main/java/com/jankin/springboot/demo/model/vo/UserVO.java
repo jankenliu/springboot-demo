@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserVO {
 
-    @Min(value = 3,message = "id不能小于3")
+    @Min(value = 3)
     private int id;
 
-    @NotBlank
+    @NotBlank()
     private String name;
 }

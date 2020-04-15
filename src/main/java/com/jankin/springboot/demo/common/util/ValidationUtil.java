@@ -30,8 +30,8 @@ public class ValidationUtil {
         if (bindingResult.hasErrors()) {
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
             String errorMessage = fieldErrors.stream().
-                    map(FieldError::getDefaultMessage).
-                    collect(Collectors.joining("|"));
+                    map(e->e.getField()+e.getDefaultMessage()).
+                    collect(Collectors.joining(","));
             throwParamException(errorMessage);
         }
     }

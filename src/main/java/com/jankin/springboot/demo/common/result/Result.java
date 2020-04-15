@@ -112,7 +112,15 @@ public class Result<T> {
     }
 
     public static  Result fail(String desc) {
-        return Result.fail().setDesc(desc);
+        return fail().setDesc(desc);
+    }
+
+    public  static Result paramErr() {
+        return new Result(ResultStateEnum.PARAM_ERR);
+    }
+
+    public static  Result paramErr(String desc) {
+        return paramErr().setDesc(desc);
     }
 
 }

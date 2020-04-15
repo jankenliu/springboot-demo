@@ -18,14 +18,9 @@ public class ValidParamException extends RuntimeException {
      */
     Result result;
 
-    public ValidParamException(ResultStateEnum resultState) {
-        super(resultState.getMessage());
-        this.result=new Result(resultState);
-    }
-
     public ValidParamException(String desc) {
         super(desc);
-        this.result = Result.fail().setDesc(desc);
+        this.result = Result.paramErr(desc);
     }
 
 
