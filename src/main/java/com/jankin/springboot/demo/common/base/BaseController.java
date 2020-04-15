@@ -1,5 +1,8 @@
 package com.jankin.springboot.demo.common.base;
 
+import com.jankin.springboot.demo.common.exception.ValidException;
+import com.jankin.springboot.demo.common.exception.ValidParamException;
+import com.jankin.springboot.demo.common.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -23,7 +26,14 @@ public abstract class BaseController {
 	@ExceptionHandler
 	public Object exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) {
 		log.error("统一异常处理：", exception);
-		return "error";
+		if (exception instanceof ValidParamException){
+			ValidParamException e=(ValidParamException)exception;
+			return e.getResult();
+		}else if (exception instanceof ValidParamException){
+			ValidException e= (ValidException) exception;
+			return e.getResult();
+		}
+		return Result.fail(exception.getMessage());
 	}
 }
 

@@ -1,4 +1,4 @@
-package com.jankin.springboot.demo.plugin;
+package com.jankin.springboot.demo.common.plugin.generator;
 
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;

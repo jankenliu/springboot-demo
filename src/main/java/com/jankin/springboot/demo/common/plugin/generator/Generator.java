@@ -1,7 +1,7 @@
-package com.jankin.springboot.demo.plugin;
+package com.jankin.springboot.demo.common.plugin.generator;
 
-import com.jankin.springboot.demo.util.MybatisGeneratorUtil;
-import com.jankin.springboot.demo.util.PropertiesFileUtil;
+import com.jankin.springboot.demo.common.util.MybatisGeneratorUtil;
+import com.jankin.springboot.demo.common.util.PropertiesFileUtil;
 
 import java.util.HashMap;
 import java.util.Map;

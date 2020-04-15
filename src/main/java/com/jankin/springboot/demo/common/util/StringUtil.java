@@ -1,4 +1,4 @@
-package com.jankin.springboot.demo.util;
+package com.jankin.springboot.demo.common.util;
 
 
 import org.apache.commons.lang.StringUtils;

@@ -1,4 +1,4 @@
-package com.jankin.springboot.demo.util;
+package com.jankin.springboot.demo.common.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
