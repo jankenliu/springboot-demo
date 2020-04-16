@@ -2,9 +2,6 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 
-    <!-- 配置文件 -->
-    <properties resource="config/application-dev.properties" />
-
     <context id="MysqlContext" targetRuntime="MyBatis3Simple" defaultModelType="flat">
 
         <property name="javaFileEncoding" value="UTF-8"/>
@@ -37,7 +34,7 @@
 ##        </plugin>
 
         <!-- 数据库连接 -->
-        <jdbcConnection driverClass="${generator.jdbc.driver}" connectionURL="${generator.jdbc.url}" userId="${generator.jdbc.username}" password="${generator.jdbc.password}">
+        <jdbcConnection driverClass="${generator_jdbc_driver}" connectionURL="${generator_jdbc_url}" userId="${generator_jdbc_username}" password="${generator_jdbc_password}">
             <!-- 解决mysql8驱动下，会生成多个库表的问题,虽然connectionUrl已经指定了数据库，true表示只看指定库的表，false时会同时查找所有库。例:test库中有user表，但mysql库中也有user表，在生成PO时会把mysql.user的字段输出来 -->
             <property name ="nullCatalogMeansCurrent" value ="true"/>
         </jdbcConnection>

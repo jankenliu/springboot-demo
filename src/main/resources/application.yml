@@ -1,0 +1,34 @@
+server:
+  port: ${application.server.port}
+
+spring:
+  profiles:
+    active: dev
+  #\u6570\u636E\u6E90\u57FA\u672C\u914D\u7F6E
+  datasource:
+    druid:
+      driver-class-name: ${generator.jdbc.driver}
+      initialSize: 1
+      maxActive: 20
+      maxOpenPreparedStatements: 20
+      maxWait: 6000
+      minEvictableIdleTimeMillis: 300000
+      minIdle: 1
+      password: ${generator.jdbc.password}
+      poolPreparedStatements: true
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      url: ${generator.jdbc.url}
+      username: ${generator.jdbc.username}
+      validationQuery: select 'x'
+    type: com.alibaba.druid.pool.DruidDataSource
+
+#pagehelper\u5206\u9875\u63D2\u4EF6
+pagehelper:
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+

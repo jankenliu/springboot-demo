@@ -2,12 +2,8 @@ package com.jankin.springboot.demo.controller;
 
 
 import com.jankin.springboot.demo.common.result.Result;
-
-import com.jankin.springboot.demo.common.util.ValidationUtil;
 import com.jankin.springboot.demo.model.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +25,6 @@ public class UserController {
 
     @PostMapping("/post_hello")
     public Result postUser(@Valid @RequestBody UserVO userVO) {
-//        ValidationUtil.handleBindingResult(bindingResult);
         return Result.success(userVO);
     }
 }

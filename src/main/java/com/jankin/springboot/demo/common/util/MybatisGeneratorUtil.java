@@ -143,6 +143,10 @@ public class MybatisGeneratorUtil {
         }
         jdbcUtil.release();
 
+        context.put("generator_jdbc_driver", jdbcDriver);
+        context.put("generator_jdbc_url", jdbcUrl.replaceAll("&","&amp;"));
+        context.put("generator_jdbc_username", jdbcUsername);
+        context.put("generator_jdbc_password", jdbcPassword);
         context.put("tables", tables);
         context.put("generator_javaModelGenerator_targetPackage", packageName + ".model.po");
         context.put("generator_sqlMapGenerator_targetPackage", packageName + ".mapper.xml");
