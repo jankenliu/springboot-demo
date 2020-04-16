@@ -120,7 +120,7 @@ public class MybatisGeneratorUtil {
         //生成Controller层
         generatorController(tables);
         // 删除dao层旧代码(mapper、mapperXML)
-        deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper/xml"));
+        //deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper/xml"));
     }
 
     private static List<Map<String, Object>> generatorXml() throws Exception {
@@ -149,14 +149,11 @@ public class MybatisGeneratorUtil {
         context.put("generator_jdbc_password", jdbcPassword);
         context.put("tables", tables);
         context.put("generator_javaModelGenerator_targetPackage", packageName + ".model.po");
-        context.put("generator_sqlMapGenerator_targetPackage", packageName + ".mapper.xml");
         context.put("generator_javaClientGenerator_targetPackage", packageName + ".mapper");
         context.put("last_insert_id_tables", lastInsertIdTables);
         VelocityUtil.generate(generatorConfig_vm, generatorConfigXml, context);
         // 删除实体旧代码
         deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/model/po"));
-        // 删除dao层旧代码(mapper、mapperXML)
-        //deleteDir(new File("src/main/java/" + packageName.replaceAll("\\.", "/") + "/mapper/xml"));
         System.out.println("========== 结束生成generatorConfig.xml文件 ==========");
         return tables;
     }
