@@ -207,10 +207,8 @@ public class ValidationUtil {
      * @param tip 提示内容
      * @param params 填充tip的参数
      * @return void
-     * @author ylb
-     * @date 2019/6/5 9:39
      */
-    public static void assertListEquals(List list, String tip, String ... params) {
+    public static void assertListEquals(List<?> list, String tip, String ... params) {
         if (list == null || list.size() <= 0) {
             throwValidException(String.format(tip, params));
         }
