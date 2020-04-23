@@ -1,14 +1,14 @@
-# \u5F00\u53D1\u73AF\u5883\u914D\u7F6E\u6587\u4EF6
+# 开发环境配置文件
 generator:
   jdbc:
     driver: com.mysql.cj.jdbc.Driver
     password: 12345678
     url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=UTF-8
     username: root
-  # \u9879\u76EE\u5305\u76EE\u5F55\u7ED3\u6784
+  # 项目包名
   packageName: com.jankin.springboot.demo
 
-# \u670D\u52A1\u5668\u7AEF\u53E3
+# 服务器端口
 application:
   server:
     port: 8080

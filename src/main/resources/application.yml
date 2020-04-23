@@ -4,7 +4,7 @@ server:
 spring:
   profiles:
     active: dev
-  #\u6570\u636E\u6E90\u57FA\u672C\u914D\u7F6E
+  #数据源基本配置
   datasource:
     druid:
       driver-class-name: ${generator.jdbc.driver}
@@ -25,7 +25,7 @@ spring:
       validationQuery: select 'x'
     type: com.alibaba.druid.pool.DruidDataSource
 
-#pagehelper\u5206\u9875\u63D2\u4EF6
+#pagehelper分页插件
 pagehelper:
   helperDialect: mysql
   params: count=countSql
