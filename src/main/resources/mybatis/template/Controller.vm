@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequestMapping("/${modelLowerCase}")
-public class ${model}Controller extends BaseController {
+public class ${model}Controller {
 
 }
