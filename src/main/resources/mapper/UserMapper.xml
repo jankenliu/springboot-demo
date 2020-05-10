@@ -10,4 +10,15 @@
     <result column="gender" jdbcType="TINYINT" property="gender" />
     <result column="age" jdbcType="TINYINT" property="age" />
   </resultMap>
+
+  <select id="getUserIn" resultType="com.jankin.springboot.demo.model.po.User">
+    select * from user_tb
+    <if test="userIdList.size() >0">
+      <where> user_id  IN
+        <foreach collection='userIdList' item='itme' open='(' separator=',' close=')'>
+          #{itme}
+        </foreach>
+      </where>
+    </if>
+  </select>
 </mapper>
