@@ -17,4 +17,9 @@ public class UserServiceImpl {
     @Autowired
     UserMapper userMapper;
 
+    public static void main(String[] args) {
+
+        System.out.println("1111111");
+    }
+
 }
