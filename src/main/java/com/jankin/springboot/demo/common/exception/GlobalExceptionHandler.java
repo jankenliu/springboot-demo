@@ -3,6 +3,8 @@ package com.jankin.springboot.demo.common.exception;
 import com.jankin.springboot.demo.common.result.Result;
 import com.jankin.springboot.demo.common.util.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.binding.BindingException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler {
 	 * @param exception 异常
 	 */
 	@ResponseBody
-	@ExceptionHandler({MethodArgumentNotValidException.class,ValidParamException.class})
+	@ExceptionHandler({MethodArgumentNotValidException.class,ValidParamException.class, BindException.class})
 	public Object paramExceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception exception) {
 		String reqMethodPath=request.getMethod() +request.getServletPath();
 		if (exception instanceof ValidParamException){
@@ -37,6 +39,18 @@ public class GlobalExceptionHandler {
 			return e.getResult();
 		}else if (exception instanceof MethodArgumentNotValidException){
 			MethodArgumentNotValidException e= (MethodArgumentNotValidException) exception;
+			BindingResult bindingResult=e.getBindingResult();
+			try {
+				ValidationUtil.handleBindingResult(bindingResult);
+			} catch (ValidParamException ex) {
+				log.error("[参数异常]：{} >>> {}", reqMethodPath,ex.getMessage());
+				return ex.getResult();
+			} catch (Exception ex2){
+				log.error("[系统异常1]：",ex2);
+				return Result.fail(exception.getMessage());
+			}
+		}else if (exception instanceof BindException){
+			BindException e= (BindException) exception;
 			BindingResult bindingResult=e.getBindingResult();
 			try {
 				ValidationUtil.handleBindingResult(bindingResult);
