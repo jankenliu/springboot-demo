@@ -22,5 +22,5 @@ public class UserVO {
     private Long id;
 
     @NotBlank()
-    private String name;
+    private String name="7777";
 }

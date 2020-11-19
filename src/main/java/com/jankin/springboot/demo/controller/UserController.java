@@ -2,17 +2,20 @@ package com.jankin.springboot.demo.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.Lists;
 import com.jankin.springboot.demo.common.result.Result;
 import com.jankin.springboot.demo.common.util.ApiProxy;
 import com.jankin.springboot.demo.controller.feign.TestFeign;
+import com.jankin.springboot.demo.mapper.UserMapper;
+import com.jankin.springboot.demo.model.po.User;
 import com.jankin.springboot.demo.model.vo.UserVO;
 import com.jankin.springboot.demo.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,9 +34,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserMapper userMapper;
+
+
     @GetMapping("/get_hello")
-    public Result getUser(@Valid UserVO userVO, BindingResult bindingResult) {
-        return Result.success("get");
+    public Result getUser() {
+        List<User> userIn = userMapper.getUserIn(Lists.newArrayList(1, 2, 3, 4));
+        return Result.success(userIn);
     }
 
     @PostMapping("/post_hello")

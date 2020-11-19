@@ -31,4 +31,16 @@ pagehelper:
   params: count=countSql
   reasonable: true
   supportMethodsArguments: true
-
+#mybatis xml文件配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml,classpath*:/mapper/**.xml
+const:
+  sss: 666
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+zlh:
+  ossTransfer:
+    environment: dev
