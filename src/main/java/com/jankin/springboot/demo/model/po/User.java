@@ -6,34 +6,29 @@ import lombok.Data;
 /**
  * 用户表
  * 数据库表：user
- *
- * PO（bean,entity等命名）:
- *
- * 数据库表中的记录在java对象中的显示状态,最形象的理解就是一个PO就是数据库中的一条记录。
- * 好处是可以把一条记录作为一个对象处理，可以方便的转为其它对象。
  */
 @Data
 @Table(name = "user")
 public class User {
     /**
-     * 用户id(主键)
+     * 用户id
      */
     @Id
     @Column(name = "user_id")
-    private Integer userId;
+    private Integer userId;//用户id
 
     /**
-     * 用户名
+     * 名称
      */
-    private String name;
+    private String name;//名称
 
     /**
-     * 性别
+     * 性别0未知 1男 2女
      */
-    private String gender;
+    private Byte gender;//性别0未知 1男 2女
 
     /**
      * 年龄
      */
-    private Integer age;
+    private Byte age;//年龄
 }

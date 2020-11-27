@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+    <pluginGroups>
+    </pluginGroups>
+
+    <proxies>
+    </proxies>
+
+    <servers>
+        <!-- <server>
+              <id>ossrh</id>
+              <username>jankin</username>
+              <password>,Loading12385</password>
+          </server> -->
+        <server>
+            <id>rdc-releases</id>
+            <username>vGwMzb</username>
+            <password>d6ktg8dpyL</password>
+        </server>
+        <server>
+            <id>rdc-snapshots</id>
+            <username>vGwMzb</username>
+            <password>d6ktg8dpyL</password>
+        </server>
+    </servers>
+
+    <mirrors>
+        <!-- 阿里云仓库 -->
+        <mirror>
+            <id>nexus-aliyun</id>
+            <mirrorOf>central</mirrorOf>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </mirror>
+
+        <!-- 阿里云仓库 -->
+        <mirror>
+            <id>alimaven</id>
+            <mirrorOf>central</mirrorOf>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </mirror>
+    </mirrors>
+
+    <profiles>
+        <!--   <profile>
+            <id>ossrh</id>
+            <activation>
+              <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+              <gpg.executable>gpg.exe</gpg.executable>
+              <gpg.passphrase>loading1</gpg.passphrase>
+            </properties>
+          </profile> -->
+        <profile>
+            <id>rdc-private-repo</id>
+            <repositories>
+                <repository>
+                    <id>rdc-releases</id>
+                    <url>https://repo.rdc.aliyun.com/repository/116907-release-ms0n84/</url>
+                </repository>
+                <repository>
+                    <id>rdc-snapshots</id>
+                    <url>https://repo.rdc.aliyun.com/repository/116907-snapshot-W8ATND/</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>rdc-releases</id>
+                    <url>https://repo.rdc.aliyun.com/repository/116907-release-ms0n84/</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>rdc-snapshots</id>
+                    <url>https://repo.rdc.aliyun.com/repository/116907-snapshot-W8ATND/</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+    <!-- 指定被激活的配置文件-->
+    <activeProfiles>
+        <activeProfile>rdc-private-repo</activeProfile>
+    </activeProfiles>
+
+</settings>

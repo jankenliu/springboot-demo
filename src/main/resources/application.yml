@@ -1,0 +1,46 @@
+server:
+  port: ${application.server.port}
+
+spring:
+  profiles:
+    active: dev
+  #数据源基本配置
+  datasource:
+    druid:
+      driver-class-name: ${generator.jdbc.driver}
+      initialSize: 1
+      maxActive: 20
+      maxOpenPreparedStatements: 20
+      maxWait: 6000
+      minEvictableIdleTimeMillis: 300000
+      minIdle: 1
+      password: ${generator.jdbc.password}
+      poolPreparedStatements: true
+      testOnBorrow: false
+      testOnReturn: false
+      testWhileIdle: true
+      timeBetweenEvictionRunsMillis: 60000
+      url: ${generator.jdbc.url}
+      username: ${generator.jdbc.username}
+      validationQuery: select 'x'
+    type: com.alibaba.druid.pool.DruidDataSource
+
+#pagehelper分页插件
+pagehelper:
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+#mybatis xml文件配置
+mybatis:
+  mapper-locations: classpath:mapper/*.xml,classpath*:/mapper/**.xml
+const:
+  sss: 666
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh,health
+zlh:
+  ossTransfer:
+    environment: dev
