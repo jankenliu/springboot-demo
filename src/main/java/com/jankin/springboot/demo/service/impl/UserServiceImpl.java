@@ -1,10 +1,11 @@
 package com.jankin.springboot.demo.service.impl;
 
 import com.google.common.collect.Maps;
-import com.jankin.springboot.demo.model.vo.UserVO;
-import lombok.extern.slf4j.Slf4j;
-import com.jankin.springboot.demo.service.UserService;
 import com.jankin.springboot.demo.mapper.UserMapper;
+import com.jankin.springboot.demo.model.vo.UserVO;
+import com.jankin.springboot.demo.service.UserService;
+import com.jankin.springboot.demo.test.anno.CustomCache;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,16 +19,11 @@ import java.util.Map;
 */
 @Slf4j
 @Service
+@CustomCache(key = "user111")
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
-
-    public static void main(String[] args) {
-
-        System.out.println("1111111");
-        System.out.println("44444");
-    }
 
     @Override
     public Map<String, Object> testProxy(UserVO param1, UserVO param2) {
