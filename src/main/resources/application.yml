@@ -44,3 +44,5 @@ management:
 zlh:
   ossTransfer:
     environment: dev
+
+#sams.config.newMemberRpcDomain:
